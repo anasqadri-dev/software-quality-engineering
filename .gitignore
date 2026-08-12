@@ -1,0 +1,199 @@
+# ============================================
+# Software Quality Engineering
+# Course Repository - Root .gitignore
+# ============================================
+
+
+# ============================================
+# Operating System Files
+# ============================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+
+# ============================================
+# IDEs & Code Editors
+# ============================================
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+/nbproject/private/
+/nbproject/Makefile-*
+/nbproject/build-*
+/nbbuild/
+/dist/
+/.nb-gradle/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+
+# ============================================
+# Java
+# ============================================
+
+# Compiled Java files
+*.class
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Java archives
+*.jar
+*.war
+*.ear
+
+
+# ============================================
+# Node.js / JavaScript / TypeScript
+# ============================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.npm/
+.pnpm-store/
+
+# Build output
+.next/
+.nuxt/
+dist/
+coverage/
+
+# Vite
+.vite/
+
+
+# ============================================
+# Python
+# ============================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing / coverage
+.pytest_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+
+# ============================================
+# C / C++
+# ============================================
+
+# Compiled binaries
+*.o
+*.obj
+*.exe
+*.out
+
+# Build directories
+cmake-build-*/
+
+
+# ============================================
+# Logs
+# ============================================
+
+*.log
+logs/
+
+
+# ============================================
+# Temporary / Backup Files
+# ============================================
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.orig
+
+tmp/
+temp/
+
+
+# ============================================
+# Environment & Secrets
+# ============================================
+
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local secret/config files
+secrets.*
+config.local.*
+
+
+# ============================================
+# Test / Coverage Output
+# ============================================
+
+coverage/
+reports/
+test-results/
+allure-results/
+allure-report/
+
+
+# ============================================
+# OS / Application Generated Files
+# ============================================
+
+*.stackdump
+*.dmp
+
+Theory/
+*.jpg
+*.docx
