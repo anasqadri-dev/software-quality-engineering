@@ -1,5 +1,5 @@
 class Gradebook:
 
-    def __init__(self, roll_no, grade):
-        self.roll_no = roll_no
+    def __init__(self, student_id, grade):
+        self.student_id = student_id
         self.grade = grade
