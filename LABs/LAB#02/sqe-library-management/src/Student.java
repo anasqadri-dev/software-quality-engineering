@@ -1,11 +1,17 @@
 public class Student {
-    private String name;
+    private String studentName;
     private int age;
-    public Student() {
-        this.name = "Anas";
-        this.age = 21;
-    }
     
+    public Student(String studentName, int age) {
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+
+        this.studentName = studentName;
+        this.age = age;
+    }
+
+
     /**
      * Adds a score to the student.
     **/
