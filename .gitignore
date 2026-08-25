@@ -195,3 +195,4 @@ allure-report/
 *.dmp
 
 Theory/
+~$*
