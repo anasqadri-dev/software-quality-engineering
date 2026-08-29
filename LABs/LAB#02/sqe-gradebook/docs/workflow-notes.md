@@ -59,3 +59,25 @@ RELEASED
 ## Summary
 
 The GradeBook workflow integrates QA throughout development rather than treating testing as a final step. A change begins as an idea, is recorded as an Issue, implemented on a Branch, submitted through a PR, reviewed, merged, checked by CI, and finally released. QA can contribute quality checks and risk identification throughout this entire flow.
+
+## Task 3 — Deliberate Merge Conflict
+
+### Cause of the Conflict
+
+The merge conflict occurred because two feature branches modified the same lines in `Student.java` in different ways.
+
+The first branch, `feature/rename-field-a`, renamed the student identification field to `studentId`.
+
+The second branch, `feature/rename-field-b`, renamed the same field to `idNumber`.
+
+After the first branch was merged into `main`, Git could not automatically determine which version should be used when the second branch was merged into `main`.
+
+### Conflict Resolution
+
+The conflict was resolved locally on `feature/rename-field-b`.
+
+The following commands were used:
+
+```bash
+git switch feature/rename-field-b
+git merge main
