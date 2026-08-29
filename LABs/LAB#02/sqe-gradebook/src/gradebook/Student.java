@@ -15,6 +15,12 @@ public class Student {
         this.scores = new ArrayList<>();
     }
 
+    /**
+     * Adds a score for the student.
+     *
+     * @param score the student's score
+     * @throws IllegalArgumentException if the score is negative
+    */
     public void addScore(double score) {
         if (score < 0) {
             throw new IllegalArgumentException("Score cannot be negative");
