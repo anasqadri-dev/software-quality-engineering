@@ -104,3 +104,58 @@ The updated branch was then merged into `main` through a pull request.
 ## QA Observation
 
 The conflict demonstrated that simultaneous changes to the same code can require manual resolution. Reviewing the conflicting changes before resolving them helps ensure that the final code preserves the intended behavior of both branches.
+
+# Task 4 — Commit Hygiene Audit
+
+## Last 10 Commits
+
+The following is the output of `git log --oneline -10`:
+
+```text
+34b0e6a (HEAD -> main, origin/main, origin/HEAD) docs: document merge conflict resolution
+27bca4d fix: resolve student field rename conflict
+5d493f6 refactor(student): rename roll number to id number (#20)
+6dd3b82 refactor(student): rename roll number to student id (#19)
+1799ec3 feat(student): add score-adding capability (#18)
+a3698eb docs: document quality workflow
+bb03fac Update issue templates
+6ab8eb3 Update issue templates
+a751186 Enhance pull request template with new sections
+73bceec Revise feature request template structure
+```
+
+## Weak Commit Message 1
+
+### Original
+
+```text
+Update issue templates
+```
+
+### Rewritten Conventional Commit
+
+```text
+docs: update issue templates
+```
+
+### Why the Rewritten Version Is Better
+
+The rewritten message follows the Conventional Commits format by using the `docs:` type. It clearly identifies that the change is related to documentation or repository templates, making the purpose of the commit easier to understand from the Git history.
+
+## Weak Commit Message 2
+
+### Original
+
+```text
+Enhance pull request template with new sections
+```
+
+### Rewritten Conventional Commit
+
+```text
+docs: enhance pull request template
+```
+
+### Why the Rewritten Version Is Better
+
+The rewritten message uses the `docs:` type and is more concise. It clearly communicates that the pull request template was changed while following a consistent Conventional Commits structure. This makes the commit history easier to scan and understand.
