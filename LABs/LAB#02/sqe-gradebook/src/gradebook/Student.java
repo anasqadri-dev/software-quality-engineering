@@ -6,12 +6,12 @@ import java.util.List;
 public class Student {
 
     private String name;
-    private String rollNo;
+    private String studentId;
     private List<Double> scores;
 
     public Student(String name, String rollNo) {
         this.name = name;
-        this.rollNo = rollNo;
+        this.studentId = studentId;
         this.scores = new ArrayList<>();
     }
 
