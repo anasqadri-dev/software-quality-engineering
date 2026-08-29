@@ -19,12 +19,13 @@ public class Student {
      * Adds a score for the student.
      *
      * @param score the student's score
-     * @throws IllegalArgumentException if the score is negative
-    */
-    public void addScore(double score) {
-        if (score < 0) {
-            throw new IllegalArgumentException("Score cannot be negative");
+     * @throws IllegalArgumentException if the score is outside the range 0-100
+     */
+    public void add_score(double score) {
+        if (score < 0 || score > 100) {
+            throw new IllegalArgumentException("Score must be between 0 and 100");
         }
+
         scores.add(score);
     }
 }
