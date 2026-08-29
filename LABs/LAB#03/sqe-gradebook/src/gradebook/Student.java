@@ -34,9 +34,25 @@ public class Student {
     }
 
     /**
-        * Returns the number of scores recorded for the student.
-    */
+     * Returns the number of scores recorded for the student.
+     */
     public int getScoreCount() {
         return scores.size();
+    }
+
+    /**
+     * Calculates the average score for the student.
+     *
+     * @return the average score, or 0.0 if no scores are recorded
+     */
+    public double calculateAverage() {
+        if (scores.isEmpty()) {
+            return 0.0;
+        }
+        double total = 0.0;
+        for (double score : scores) {
+            total += score;
+        }
+        return total / scores.size();
     }
 }
