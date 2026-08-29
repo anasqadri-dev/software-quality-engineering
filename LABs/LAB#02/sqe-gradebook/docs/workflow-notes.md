@@ -60,9 +60,9 @@ RELEASED
 
 The GradeBook workflow integrates QA throughout development rather than treating testing as a final step. A change begins as an idea, is recorded as an Issue, implemented on a Branch, submitted through a PR, reviewed, merged, checked by CI, and finally released. QA can contribute quality checks and risk identification throughout this entire flow.
 
-## Task 3 — Deliberate Merge Conflict
+# Task 3 — Deliberate Merge Conflict
 
-### Cause of the Conflict
+## Cause of the Conflict
 
 The merge conflict occurred because two feature branches modified the same lines in `Student.java` in different ways.
 
@@ -72,7 +72,7 @@ The second branch, `feature/rename-field-b`, renamed the same field to `idNumber
 
 After the first branch was merged into `main`, Git could not automatically determine which version should be used when the second branch was merged into `main`.
 
-### Conflict Resolution
+## Conflict Resolution
 
 The conflict was resolved locally on `feature/rename-field-b`.
 
@@ -81,3 +81,26 @@ The following commands were used:
 ```bash
 git switch feature/rename-field-b
 git merge main
+```
+
+Git reported a content conflict in:
+
+```text
+LABs/LAB#02/sqe-gradebook/src/gradebook/Student.java
+```
+
+The conflict markers in `Student.java` were manually edited. The `idNumber` version was kept, and the Git conflict markers were removed.
+
+The resolved file was then staged and committed:
+
+```bash
+git add LABs/LAB#02/sqe-gradebook/src/gradebook/Student.java
+git commit -m "fix: resolve student field rename conflict"
+git push origin feature/rename-field-b
+```
+
+The updated branch was then merged into `main` through a pull request.
+
+## QA Observation
+
+The conflict demonstrated that simultaneous changes to the same code can require manual resolution. Reviewing the conflicting changes before resolving them helps ensure that the final code preserves the intended behavior of both branches.
