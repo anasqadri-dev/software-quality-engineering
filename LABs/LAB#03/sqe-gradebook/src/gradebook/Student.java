@@ -1,18 +1,25 @@
 package gradebook;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Student {
 
     private String name;
     private String idNumber;
     private List<Double> scores;
+    private static Set<String> registeredIds = new HashSet<>();
 
     public Student(String name, String idNumber) {
+        if (registeredIds.contains(idNumber)) {
+            throw new IllegalArgumentException("Student ID already exists");
+        }
         this.name = name;
         this.idNumber = idNumber;
         this.scores = new ArrayList<>();
+        registeredIds.add(idNumber);
     }
 
     /**
