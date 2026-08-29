@@ -1,30 +1,31 @@
-# Bug Report
-
 ## Description
 
-Describe the bug clearly.
+<!-- Clearly describe the bug or problem. -->
 
 ## Steps to Reproduce
 
-1.
-2.
-3.
+1. 
+2. 
+3. 
 
 ## Expected Result
 
-What should have happened?
+<!-- What should have happened? -->
 
 ## Actual Result
 
-What actually happened?
+<!-- What actually happened? -->
 
 ## Environment
 
 - Operating System:
 - Java Version:
-- Project Version:
+- Application Version:
+- Other relevant details:
 
 ## Severity
+
+<!-- Select one -->
 
 - [ ] Low
 - [ ] Medium
