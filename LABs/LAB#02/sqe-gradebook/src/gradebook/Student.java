@@ -28,4 +28,15 @@ public class Student {
 
         scores.add(score);
     }
+
+    public String getStudentName() {
+        return name;
+    }
+
+    /**
+        * Returns the number of scores recorded for the student.
+    */
+    public int getScoreCount() {
+        return scores.size();
+    }
 }
