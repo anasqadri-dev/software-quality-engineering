@@ -29,7 +29,7 @@ public class Student {
      * @throws IllegalArgumentException if the score is outside the range 0-100
      */
     public void add_score(double score) {
-        if (score < 0 || score > 100) {
+        if (score < 0 || score >= 100) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
 
