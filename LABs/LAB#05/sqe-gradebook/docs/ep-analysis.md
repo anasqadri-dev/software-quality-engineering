@@ -85,3 +85,33 @@ Equivalence Partitioning does not focus on exact boundary values. Therefore, it 
 For example, score classes contain boundaries such as 59/60, 69/70, 79/80, 89/90, and 100. EP selects a representative from each class but does not test every boundary.
 
 Boundary Value Analysis will be used in a later lab to specifically target these edge values.
+
+---
+
+## 7. Full EP Test Execution Summary
+
+The complete JUnit test suite was executed after implementing the score-count and name-validation functionality.
+
+### Test Summary
+
+| Test Area | Result |
+|---|---|
+| Letter Grade EP Tests | PASS — 7/7 |
+| Score Count EP Tests | PASS — 3/3 |
+| Name Validation EP Tests | PASS — 4/4 |
+| Full Test Suite | PASS |
+
+### Name Validation Results
+
+| Class | Representative | Result |
+|---|---|---|
+| Valid typical name | "Ali Khan" | PASS |
+| Empty string | "" | PASS |
+| Over-length name | 51 characters | PASS |
+| Digits/symbols | "Ali123" | PASS |
+
+### Overall Result
+
+All implemented Equivalence Partitioning tests passed successfully. The test suite covers the defined equivalence classes for letter grades, score counts, and student names.
+
+> Note: Equivalence Partitioning is not intended to replace Boundary Value Analysis. Boundary values such as the exact 50-character name limit and score/grade boundaries require additional boundary-focused testing.
