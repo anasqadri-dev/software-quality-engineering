@@ -1,0 +1,3 @@
+# Contributing
+
+The project follows a feature-branch workflow where changes are developed on short-lived branches instead of directly on `main`. Branches should use descriptive names such as `feature/<slug>`, `fix/<slug>`, or `docs/<slug>`. Changes are submitted through pull requests and reviewed before being merged into `main`. Commits should follow the Conventional Commits format and represent small, logical changes.
