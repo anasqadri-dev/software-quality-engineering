@@ -24,7 +24,7 @@ public class Roster {
 
         int scoreCount = student.getScoreCount();
 
-        if (scoreCount < 1 || scoreCount >= 6) {
+        if (scoreCount < 1 || scoreCount > 6) {
             throw new IllegalArgumentException(
                 "Student must have between 1 and 6 scores"
             );
