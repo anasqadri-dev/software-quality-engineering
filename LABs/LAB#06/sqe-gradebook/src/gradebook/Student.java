@@ -41,6 +41,26 @@ public class Student {
     }
 
     /**
+     * Validates a student name.
+     *
+     * A valid name must contain between 1 and 50 characters.
+     *
+     * @param name the student name
+     * @return true if the name is valid
+     * @throws IllegalArgumentException if the name is null,
+     *                                  empty, or longer than 50 characters
+     */
+    public static boolean validateName(String name) {
+
+        if (name == null || name.length() < 1 || name.length() > 50) {
+            throw new IllegalArgumentException(
+                    "Name must contain between 1 and 50 characters");
+        }
+
+        return true;
+    }
+
+    /**
      * Returns the number of scores recorded for the student.
      */
     public int getScoreCount() {
