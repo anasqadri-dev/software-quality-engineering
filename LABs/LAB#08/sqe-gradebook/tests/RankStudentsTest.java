@@ -27,6 +27,7 @@ public class RankStudentsTest {
     @Test
     void testRankStudentsSingleStudentReturnsThatStudent() {
         Roster roster = new Roster();
+
         Student student = createStudent("Ali", "RANK-TASK2-001", 85.0);
         roster.add_student(student);
 
@@ -50,6 +51,22 @@ public class RankStudentsTest {
 
         assertEquals(
                 List.of(high, middle, low),
+                RankStudents.rank_students(roster)
+        );
+    }
+
+    @Test
+    void testRankStudentsBreaksEqualAverageTiesAlphabetically() {
+        Roster roster = new Roster();
+
+        Student zara = createStudent("Zara", "RANK-TASK4-001", 85.0);
+        Student ali = createStudent("Ali", "RANK-TASK4-002", 85.0);
+
+        roster.add_student(zara);
+        roster.add_student(ali);
+
+        assertEquals(
+                List.of(ali, zara),
                 RankStudents.rank_students(roster)
         );
     }
