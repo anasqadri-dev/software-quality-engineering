@@ -1,68 +1,110 @@
 
 # Unit Testing Notes — Lab 07
 
-## 1. Test Framework
+## 1. Testing Framework
 
-This project uses Java and JUnit 5 for unit testing. Tests are
-executed through the Java Test Runner in Visual Studio Code.
+This project uses Java and JUnit 5 for its gradebook unit tests.
+The Java tests are executed through the Java Test Runner in
+Visual Studio Code.
 
-The tests cover student score validation, grade calculation, name
-validation, roster management, class averages, file-saving behavior,
-and error handling.
+The repository also has a pytest configuration for the separate
+Python-based test discovery requirement specified in the lab
+instructions.
 
-## 2. Running All Tests
+## 2. Verbose Test Output
 
-### Procedure
+### Command
 
-1. Open the project in Visual Studio Code.
-2. Open the Testing panel from the Activity Bar.
-3. Select **Run Tests** to execute the discovered test suite.
-4. Review the test results in Test Explorer.
+```powershell
+pytest -v tests/
+```
 
-### Recorded Test Result
+### Output
 
-The test run shown in VS Code Test Explorer reported:
+```text
+============================ test session starts ============================
+platform win32 -- Python 3.14.2, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\BS Software Engineering\BS-5\Software Quality Engineering
+configfile: pytest.ini
+plugins: anyio-4.12.1
+collected 0 items
 
-- **Tests passed:** 60
-- **Tests failed:** 0
-- **Execution time:** Approximately 3.2 seconds
+=========================== no tests ran in 0.03s ===========================
+ERROR: file or directory not found: tests/
+```
 
-These results are from the recorded test run shown in the Lab 07
-workspace screenshot.
+### When to use verbose output
 
-## 3. Detailed Test Results
+Verbose output (`-v`) displays individual test names and their
+results. It is useful when identifying which specific test passed
+or failed.
 
-Test Explorer displays individual test classes and test cases.
-Green check marks indicate successful tests.
+### Interpretation
 
-This detailed view is useful when:
+Pytest could not find the requested `tests/` directory at the
+repository root, so it collected no tests. This output does not
+indicate that the Java/JUnit tests failed.
 
-- Verifying individual test cases.
-- Identifying which test failed after a code change.
-- Checking parameterized test cases separately.
-- Confirming that existing tests still pass after refactoring.
+## 3. Short Traceback Output
 
-## 4. Failure Output and Debugging
+### Command
 
-When a test fails, select the failed test in Test Explorer and
-inspect the available failure details.
+```powershell
+pytest --tb=short
+```
 
-Use the detailed failure information when the expected result
-differs from the actual result or when an exception is unexpected.
+### Output
 
-For a quick overview, check the total number of passed and failed
-tests. For debugging, inspect the specific failed test and its
-failure details.
+```text
+============================ test session starts ============================
+platform win32 -- Python 3.14.2, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\BS Software Engineering\BS-5\Software Quality Engineering
+configfile: pytest.ini
+plugins: anyio-4.12.1
+collected 0 items
 
-The screenshot's Test Results pane reports that the test run did
-not record additional output. Therefore, no unobserved console
-output or failure traceback is reproduced in these notes.
+=========================== warnings summary ===============================
+PytestConfigWarning: No files were found in testpaths; consider removing
+or adjusting your testpaths configuration. Searching recursively from
+the current directory instead.
+
+============================= 1 warning in 0.08s ===========================
+```
+
+### When to use short traceback output
+
+The `--tb=short` option provides a shorter traceback when a Python
+test fails. It is useful when quickly locating the relevant failure
+without reading a lengthy traceback.
+
+### Interpretation
+
+Pytest did not find any tests in the configured test path. It
+reported a warning and searched recursively, but still collected
+no tests. Since no tests failed, there was no failure traceback
+to shorten.
+
+## 4. Java/JUnit Test Results
+
+The Java test suite was run separately using the VS Code Java Test
+Runner.
+
+The recorded Lab 07 screenshot showed:
+
+- Tests passed: 60
+- Tests failed: 0
+- Execution time: approximately 3.2 seconds
+
+These Java/JUnit results are separate from the pytest command
+results above.
 
 ## 5. Test Naming and Discovery
 
-Java tests use descriptive class and method names.
+Java tests use JUnit annotations such as `@Test` and
+`@ParameterizedTest`. The Java Test Runner discovers tests using
+the Java testing framework and project configuration.
 
-Examples from this project include:
+Examples from Lab 07 include:
 
 - `ClassAverageTest.java`
 - `AddScoreParameterizedTest.java`
@@ -70,26 +112,12 @@ Examples from this project include:
 - `LetterGradeTest.java`
 - `NameValidationTest.java`
 
-The Java Test Runner discovers tests based on the configured Java
-testing framework and its test annotations, including JUnit 5
-annotations such as `@Test` and `@ParameterizedTest`.
-
-Descriptive test names make failures easier to locate and understand.
-
 ## 6. CI Readiness
 
-For continuous integration, the repository should use a Java-aware
-test runner with a configured JDK and the required JUnit dependencies.
+A Java CI workflow should configure a suitable JDK, compile the
+Java source and test files, run the JUnit test suite, and fail if
+compilation or tests fail.
 
-A CI workflow should:
-
-1. Check out the repository.
-2. Set up the required JDK.
-3. Resolve or configure the project's JUnit dependencies.
-4. Compile the source and test files.
-5. Run the complete test suite.
-6. Fail the workflow if compilation or any test fails.
-
-The current test results establish a passing local test run. A
-successful CI run must be verified separately after a Java CI
-workflow is configured.
+The pytest configuration is Python-specific and does not execute
+Java/JUnit tests. The successful local Java test run does not by
+itself confirm that a CI workflow has been configured or passed.
