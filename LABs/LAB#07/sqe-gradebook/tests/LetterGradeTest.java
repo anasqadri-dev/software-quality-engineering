@@ -1,3 +1,5 @@
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -5,9 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import gradebook.GradeBook;
 
-public class LetterGradeTest {
-
-    // Valid equivalence classes
+public class LetterGradeTest extends GradeBookTestFixtures {
 
     @Test
     void testFGradeClass() {
@@ -34,19 +34,26 @@ public class LetterGradeTest {
         assertEquals('A', GradeBook.letterGrade(95));
     }
 
-    // Invalid equivalence classes
-
     @Test
     void testInvalidLowScoreClass() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> GradeBook.letterGrade(-10));
+            IllegalArgumentException.class,
+            () -> GradeBook.letterGrade(-10)
+        );
     }
 
     @Test
     void testInvalidHighScoreClass() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> GradeBook.letterGrade(150));
+            IllegalArgumentException.class,
+            () -> GradeBook.letterGrade(150)
+        );
+    }
+
+    @Test
+    void testSharedReferenceScoresAreAccepted() {
+        for (double score : referenceScores()) {
+            assertDoesNotThrow(() -> GradeBook.letterGrade(score));
+        }
     }
 }
