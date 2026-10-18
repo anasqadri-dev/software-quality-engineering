@@ -12,8 +12,8 @@ public final class RankStudents {
     }
 
     /**
-     * Returns students sorted by average score, highest first.
-     * The original roster order is not modified.
+     * Sorts students by average score, highest first.
+     * Students with equal averages are sorted alphabetically by name.
      */
     public static List<Student> rank_students(Roster roster) {
         if (roster == null) {
@@ -25,7 +25,8 @@ public final class RankStudents {
 
         rankedStudents.sort(
                 Comparator.comparingDouble(Student::calculateAverage)
-                          .reversed()
+                        .reversed()
+                        .thenComparing(Student::getStudentName)
         );
 
         return rankedStudents;
