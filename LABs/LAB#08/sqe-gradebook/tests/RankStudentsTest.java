@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import gradebook.Roster;
-import gradebook.Student;
+import gradebook.RankStudents;
 
 import java.util.List;
 
