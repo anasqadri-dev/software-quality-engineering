@@ -45,11 +45,11 @@ public class Roster {
     }
 
     /**
-     * Calculates the average of all student averages.
+     * Calculates the average of all students' individual averages.
      *
      * @return the class average, or 0.0 if the roster is empty
      */
-    public double classAverage() {
+    public double class_average() {
         if (students.isEmpty()) {
             return 0.0;
         }
@@ -64,9 +64,9 @@ public class Roster {
     }
 
     /**
-     * Saves student records to a text file.
+     * Saves student names and averages to a text file.
      *
-     * @param filePath path of the destination file
+     * @param filePath destination file path
      * @throws GradeBookIOError if writing the file fails
      */
     public void saveToFile(String filePath) {
