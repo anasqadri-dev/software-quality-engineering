@@ -2,6 +2,7 @@
 package gradebook;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public final class RankStudents {
@@ -11,14 +12,22 @@ public final class RankStudents {
     }
 
     /**
-     * Returns the roster's students as a new list.
-     * Ranking and tie-breaking will be implemented in a later TDD cycle.
+     * Returns students sorted by average score, highest first.
+     * The original roster order is not modified.
      */
     public static List<Student> rank_students(Roster roster) {
         if (roster == null) {
             throw new IllegalArgumentException("Roster cannot be null");
         }
 
-        return new ArrayList<>(roster.getStudents());
+        List<Student> rankedStudents =
+                new ArrayList<>(roster.getStudents());
+
+        rankedStudents.sort(
+                Comparator.comparingDouble(Student::calculateAverage)
+                          .reversed()
+        );
+
+        return rankedStudents;
     }
 }
