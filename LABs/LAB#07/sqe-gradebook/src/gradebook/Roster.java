@@ -1,7 +1,6 @@
 
 package gradebook;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,44 +9,52 @@ import java.util.List;
 
 public class Roster {
 
-    private List<Student> students;
+    /**
+     * Abstraction for writing content to a file.
+     * Tests can replace the real file writer with a mock.
+     */
+    @FunctionalInterface
+    public interface FileWriterAction {
+        void write(String filePath, String content) throws IOException;
+    }
 
+    private final List<Student> students;
+    private final FileWriterAction fileWriter;
+
+    /**
+     * Normal constructor: uses real file I/O.
+     */
     public Roster() {
-        students = new ArrayList<>();
+        this((filePath, content) ->
+                Files.writeString(Path.of(filePath), content));
     }
 
     /**
-     * Adds a student to the roster.
-     *
-     * A student must have between 1 and 6 scores.
-     *
-     * @param student the student to add
-     * @throws IllegalArgumentException if the student has fewer than 1
-     *                                  or more than 6 scores
+     * Constructor for injecting a real or mocked file writer.
      */
+    public Roster(FileWriterAction fileWriter) {
+        this.students = new ArrayList<>();
+        this.fileWriter = fileWriter;
+    }
+
     public void add_student(Student student) {
         int scoreCount = student.getScoreCount();
 
         if (scoreCount < 1 || scoreCount > 6) {
             throw new IllegalArgumentException(
-                "Student must have between 1 and 6 scores"
-            );
+                    "Student must have between 1 and 6 scores");
         }
 
         students.add(student);
     }
 
-    /**
-     * Returns the number of students in the roster.
-     */
     public int getStudentCount() {
         return students.size();
     }
 
     /**
-     * Calculates the average of all students' individual averages.
-     *
-     * @return the class average, or 0.0 if the roster is empty
+     * Returns the average of the individual student averages.
+     * An empty roster has an average of zero.
      */
     public double class_average() {
         if (students.isEmpty()) {
@@ -64,28 +71,24 @@ public class Roster {
     }
 
     /**
-     * Saves student names and averages to a text file.
-     *
-     * @param filePath destination file path
-     * @throws GradeBookIOError if writing the file fails
+     * Saves each student's name and average.
+     * Each student occupies one line: name,average
      */
     public void saveToFile(String filePath) {
-        try (BufferedWriter writer =
-                 Files.newBufferedWriter(Path.of(filePath))) {
+        StringBuilder content = new StringBuilder();
 
-            for (Student student : students) {
-                writer.write(
-                    student.getStudentName()
-                    + ","
-                    + student.calculateAverage()
-                );
-                writer.newLine();
-            }
+        for (Student student : students) {
+            content.append(student.getStudentName())
+                   .append(",")
+                   .append(student.calculateAverage())
+                   .append(System.lineSeparator());
+        }
 
+        try {
+            fileWriter.write(filePath, content.toString());
         } catch (IOException | SecurityException e) {
             throw new GradeBookIOError(
-                "Unable to save roster to file: " + filePath, e
-            );
+                    "Unable to save roster to file: " + filePath, e);
         }
     }
 }
