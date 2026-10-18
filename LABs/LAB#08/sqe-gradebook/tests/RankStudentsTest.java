@@ -11,6 +11,12 @@ import gradebook.Student;
 
 public class RankStudentsTest {
 
+    private Student createStudent(String name, String id, double score) {
+        Student student = new Student(name, id);
+        student.add_score(score);
+        return student;
+    }
+
     @Test
     void testRankStudentsEmptyRosterReturnsEmptyList() {
         Roster roster = new Roster();
@@ -21,9 +27,7 @@ public class RankStudentsTest {
     @Test
     void testRankStudentsSingleStudentReturnsThatStudent() {
         Roster roster = new Roster();
-
-        Student student = new Student("Ali", "RANK-TASK2-001");
-        student.add_score(85.0);
+        Student student = createStudent("Ali", "RANK-TASK2-001", 85.0);
         roster.add_student(student);
 
         assertEquals(
@@ -36,16 +40,12 @@ public class RankStudentsTest {
     void testRankStudentsReturnsStudentsInDescendingAverageOrder() {
         Roster roster = new Roster();
 
-        Student low = new Student("Ali", "RANK-TASK3-001");
-        low.add_score(60.0);
+        Student low = createStudent("Ali", "RANK-TASK3-001", 60.0);
+        Student high = createStudent("Sara", "RANK-TASK3-002", 95.0);
+        Student middle = createStudent("Ahmed", "RANK-TASK3-003", 80.0);
+
         roster.add_student(low);
-
-        Student high = new Student("Sara", "RANK-TASK3-002");
-        high.add_score(95.0);
         roster.add_student(high);
-
-        Student middle = new Student("Ahmed", "RANK-TASK3-003");
-        middle.add_score(80.0);
         roster.add_student(middle);
 
         assertEquals(
