@@ -9,10 +9,6 @@ import java.util.List;
 
 public class Roster {
 
-    /**
-     * Abstraction for writing content to a file.
-     * Tests can replace the real file writer with a mock.
-     */
     @FunctionalInterface
     public interface FileWriterAction {
         void write(String filePath, String content) throws IOException;
@@ -21,17 +17,11 @@ public class Roster {
     private final List<Student> students;
     private final FileWriterAction fileWriter;
 
-    /**
-     * Normal constructor: uses real file I/O.
-     */
     public Roster() {
         this((filePath, content) ->
                 Files.writeString(Path.of(filePath), content));
     }
 
-    /**
-     * Constructor for injecting a real or mocked file writer.
-     */
     public Roster(FileWriterAction fileWriter) {
         this.students = new ArrayList<>();
         this.fileWriter = fileWriter;
@@ -52,10 +42,10 @@ public class Roster {
         return students.size();
     }
 
-    /**
-     * Returns the average of the individual student averages.
-     * An empty roster has an average of zero.
-     */
+    public List<Student> getStudents() {
+        return new ArrayList<>(students);
+    }
+
     public double class_average() {
         if (students.isEmpty()) {
             return 0.0;
@@ -70,10 +60,6 @@ public class Roster {
         return total / students.size();
     }
 
-    /**
-     * Saves each student's name and average.
-     * Each student occupies one line: name,average
-     */
     public void saveToFile(String filePath) {
         StringBuilder content = new StringBuilder();
 

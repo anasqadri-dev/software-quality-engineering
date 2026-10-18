@@ -1,6 +1,7 @@
 
 package gradebook;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class RankStudents {
@@ -9,6 +10,12 @@ public final class RankStudents {
     }
 
     public static List<Student> rank_students(Roster roster) {
-        return List.of();
+        List<Student> rankedStudents = new ArrayList<>();
+
+        for (Student student : roster.getStudents()) {
+            rankedStudents.add(student);
+        }
+
+        return rankedStudents;
     }
 }
