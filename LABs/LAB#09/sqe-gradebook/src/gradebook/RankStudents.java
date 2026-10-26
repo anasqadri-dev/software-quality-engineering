@@ -39,6 +39,14 @@ public final class RankStudents {
 
         int rankIndex = rankedStudents.indexOf(student);
 
-        return (double) rankIndex / rankedStudents.size() * 100;
+        int totalStudents = rankedStudents.size();
+        if (totalStudents == 0) {
+            throw new IllegalArgumentException("Roster cannot be empty");
+        }
+        if (totalStudents == 1) {
+            return 100.0;
+        }
+        return (double) (totalStudents - 1 - rankIndex)
+                / (totalStudents - 1) * 100.0;
     }
 }
