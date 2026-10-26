@@ -35,10 +35,12 @@
 - [ ] Performance is reasonable for expected input sizes.
 - [ ] Backward compatibility with existing functionality is preserved.
 
-## Lessons Learned
+## Lessons Learned Retrospective
 
-*To be completed after the code-review exercise.*
+### Most Valuable Issue Caught
 
-- **Most valuable issue caught:** Record the issue identified by the checklist that had the greatest impact on correctness or quality.
-- **Checklist improvement:** Record one additional checkpoint that would make future code reviews more effective.
-- **Reflection:** Explain how structured review comments and the Request Changes → Approve workflow improved the quality of the GradeBook implementation.
+The most valuable issue caught during the review was the incorrect percentile formula, which assigned 0% to the highest-ranked student. The review also identified missing handling for empty rosters, null arguments, and students not present in the roster. These issues were addressed, and tests were added for the expected behavior and edge cases.
+
+### Checklist Item to Add Next Time
+
+Add a checkpoint to verify boundary conditions and invalid inputs, including the highest-ranked student, lowest-ranked student, single-student roster, empty roster, null arguments, and a student who does not belong to the roster.
