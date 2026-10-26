@@ -1,4 +1,3 @@
-
 package gradebook;
 
 import java.util.ArrayList;
@@ -31,5 +30,15 @@ public final class RankStudents {
         );
 
         return rankedStudents;
+    }
+    /**
+     * Calculates the percentile of a student within the roster.
+     */
+    public static double percentile(Student student, Roster roster) {
+        List<Student> rankedStudents = rank_students(roster);
+
+        int rankIndex = rankedStudents.indexOf(student);
+
+        return (double) rankIndex / rankedStudents.size() * 100;
     }
 }
