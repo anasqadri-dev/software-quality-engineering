@@ -50,6 +50,29 @@ jobs:
       - name: Run final test suite and enforce coverage thresholds
         run: mvn -B -f LABs/LAB#11/sqe-gradebook/pom.xml clean verify
 
+      - name: Prove the coverage threshold fails when a boundary test is disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHECK_DIR="$RUNNER_TEMP/lab11-threshold-check"
+          mkdir -p "$CHECK_DIR"
+          cp -R LABs/LAB#11/sqe-gradebook/. "$CHECK_DIR/"
+          rm -rf "$CHECK_DIR/target"
+          mv "$CHECK_DIR/tests/AddScoreParameterizedTest.java" "$CHECK_DIR/tests/AddScoreParameterizedTest.java.disabled"
+          set +e
+          mvn -B -f "$CHECK_DIR/pom.xml" clean verify 2>&1 | tee "$RUNNER_TEMP/lab11-threshold-check.log"
+          BUILD_STATUS=${PIPESTATUS[0]}
+          set -e
+          if [ "$BUILD_STATUS" -eq 0 ]; then
+            echo "Coverage threshold unexpectedly passed after disabling the boundary test."
+            exit 1
+          fi
+          if ! grep -q "Rule violated for bundle" "$RUNNER_TEMP/lab11-threshold-check.log"; then
+            echo "Build failed for a reason other than the JaCoCo coverage threshold."
+            exit 1
+          fi
+          echo "PASS: JaCoCo rejected the weakened test suite as expected."
+
       - name: Collect final coverage reports
         if: always()
         shell: bash
