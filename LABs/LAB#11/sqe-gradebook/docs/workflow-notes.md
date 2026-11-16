@@ -1,0 +1,161 @@
+# Workflow Notes
+
+## Idea → Released Workflow
+
+```text
+IDEA
+  │
+  ▼
+ISSUE
+  │
+  │ QA: Clarifies requirements, acceptance criteria,
+  │     and identifies possible quality risks.
+  ▼
+BRANCH
+  │
+  │ QA: Helps define what should be tested for the change.
+  ▼
+PULL REQUEST (PR)
+  │
+  │ QA: Checks that the change includes appropriate tests
+  │     and that quality requirements are addressed.
+  ▼
+REVIEW
+  │
+  │ QA: Reviews the implementation and test coverage,
+  │     and identifies defects or quality concerns.
+  ▼
+MERGE
+  │
+  │ QA: Confirms review requirements are satisfied
+  │     before the change is integrated.
+  ▼
+CI (Continuous Integration)
+  │
+  │ QA: Monitors automated tests and quality checks
+  │     and investigates failures.
+  ▼
+RELEASE
+  │
+  │ QA: Verifies that the completed change meets
+  │     release requirements before delivery.
+  ▼
+RELEASED
+```
+
+## QA Intervention at Each Stage
+
+| Stage       | QA Engineer Intervention                                                                |
+| ----------- | --------------------------------------------------------------------------------------- |
+| **Idea**    | Clarify requirements, acceptance criteria, and potential quality risks.                 |
+| **Issue**   | Ensure the issue clearly describes the required behavior and conditions for acceptance. |
+| **Branch**  | Identify the testing needs and quality checks associated with the change.               |
+| **PR**      | Check that appropriate tests and documentation have been included.                      |
+| **Review**  | Review the implementation, test coverage, and potential defects.                        |
+| **Merge**   | Confirm required reviews and quality conditions are satisfied before integration.       |
+| **CI**      | Monitor automated tests and quality checks and investigate failures.                    |
+| **Release** | Verify that the change satisfies release requirements and is ready for delivery.        |
+
+## Summary
+
+The GradeBook workflow integrates QA throughout development rather than treating testing as a final step. A change begins as an idea, is recorded as an Issue, implemented on a Branch, submitted through a PR, reviewed, merged, checked by CI, and finally released. QA can contribute quality checks and risk identification throughout this entire flow.
+
+# Task 3 — Deliberate Merge Conflict
+
+## Cause of the Conflict
+
+The merge conflict occurred because two feature branches modified the same lines in `Student.java` in different ways.
+
+The first branch, `feature/rename-field-a`, renamed the student identification field to `studentId`.
+
+The second branch, `feature/rename-field-b`, renamed the same field to `idNumber`.
+
+After the first branch was merged into `main`, Git could not automatically determine which version should be used when the second branch was merged into `main`.
+
+## Conflict Resolution
+
+The conflict was resolved locally on `feature/rename-field-b`.
+
+The following commands were used:
+
+```bash
+git switch feature/rename-field-b
+git merge main
+```
+
+Git reported a content conflict in:
+
+```text
+LABs/LAB#02/sqe-gradebook/src/gradebook/Student.java
+```
+
+The conflict markers in `Student.java` were manually edited. The `idNumber` version was kept, and the Git conflict markers were removed.
+
+The resolved file was then staged and committed:
+
+```bash
+git add LABs/LAB#02/sqe-gradebook/src/gradebook/Student.java
+git commit -m "fix: resolve student field rename conflict"
+git push origin feature/rename-field-b
+```
+
+The updated branch was then merged into `main` through a pull request.
+
+## QA Observation
+
+The conflict demonstrated that simultaneous changes to the same code can require manual resolution. Reviewing the conflicting changes before resolving them helps ensure that the final code preserves the intended behavior of both branches.
+
+# Task 4 — Commit Hygiene Audit
+
+## Last 10 Commits
+
+The following is the output of `git log --oneline -10`:
+
+```text
+34b0e6a (HEAD -> main, origin/main, origin/HEAD) docs: document merge conflict resolution
+27bca4d fix: resolve student field rename conflict
+5d493f6 refactor(student): rename roll number to id number (#20)
+6dd3b82 refactor(student): rename roll number to student id (#19)
+1799ec3 feat(student): add score-adding capability (#18)
+a3698eb docs: document quality workflow
+bb03fac Update issue templates
+6ab8eb3 Update issue templates
+a751186 Enhance pull request template with new sections
+73bceec Revise feature request template structure
+```
+
+## Weak Commit Message 1
+
+### Original
+
+```text
+Update issue templates
+```
+
+### Rewritten Conventional Commit
+
+```text
+docs: update issue templates
+```
+
+### Why the Rewritten Version Is Better
+
+The rewritten message follows the Conventional Commits format by using the `docs:` type. It clearly identifies that the change is related to documentation or repository templates, making the purpose of the commit easier to understand from the Git history.
+
+## Weak Commit Message 2
+
+### Original
+
+```text
+Enhance pull request template with new sections
+```
+
+### Rewritten Conventional Commit
+
+```text
+docs: enhance pull request template
+```
+
+### Why the Rewritten Version Is Better
+
+The rewritten message uses the `docs:` type and is more concise. It clearly communicates that the pull request template was changed while following a consistent Conventional Commits structure. This makes the commit history easier to scan and understand.
