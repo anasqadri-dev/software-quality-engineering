@@ -1,5 +1,4 @@
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -51,9 +50,10 @@ public class LetterGradeTest extends GradeBookTestFixtures {
     }
 
     @Test
-    void testSharedReferenceScoresAreAccepted() {
-        for (double score : referenceScores()) {
-            assertDoesNotThrow(() -> GradeBook.letterGrade(score));
-        }
+    void testSharedReferenceScoresProduceTheExpectedLetterGrades() {
+        double[] scores = referenceScores();
+        assertEquals('B', GradeBook.letterGrade(scores[0]));
+        assertEquals('A', GradeBook.letterGrade(scores[1]));
+        assertEquals('C', GradeBook.letterGrade(scores[2]));
     }
 }

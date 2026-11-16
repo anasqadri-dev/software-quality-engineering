@@ -1,0 +1,96 @@
+name: Lab 11 - GradeBook Java Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - feature/lab11-java-coverage
+    paths:
+      - "LABs/LAB#11/sqe-gradebook/**"
+      - ".github/workflows/lab11-coverage.yml"
+  pull_request:
+    paths:
+      - "LABs/LAB#11/sqe-gradebook/**"
+      - ".github/workflows/lab11-coverage.yml"
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    name: JUnit 5 and JaCoCo Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "23"
+          cache: maven
+
+      - name: Build a baseline report from the pre-test Lab 11 snapshot
+        shell: bash
+        env:
+          BASELINE_SHA: a9c6c13e6c1db052474247f0c0b99089c6ff84fd
+          PROJECT_DIR: LABs/LAB#11/sqe-gradebook
+        run: |
+          set -euo pipefail
+          BASELINE_DIR="$RUNNER_TEMP/lab11-baseline"
+          mkdir -p "$BASELINE_DIR"
+          git archive "$BASELINE_SHA" "$PROJECT_DIR" | tar -x -C "$BASELINE_DIR"
+          cp "$PROJECT_DIR/pom.xml" "$BASELINE_DIR/$PROJECT_DIR/pom.xml"
+          mvn -B -f "$BASELINE_DIR/$PROJECT_DIR/pom.xml" clean test jacoco:report
+          mkdir -p coverage-artifacts/baseline
+          cp -R "$BASELINE_DIR/$PROJECT_DIR/target/site/jacoco/." coverage-artifacts/baseline/
+          cp "$BASELINE_DIR/$PROJECT_DIR/target/site/jacoco/jacoco.xml" coverage-artifacts/baseline-jacoco.xml
+
+      - name: Run final test suite and enforce coverage thresholds
+        run: mvn -B -f LABs/LAB#11/sqe-gradebook/pom.xml clean verify
+
+      - name: Prove the coverage threshold fails when a boundary test is disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHECK_DIR="$RUNNER_TEMP/lab11-threshold-check"
+          mkdir -p "$CHECK_DIR"
+          cp -R LABs/LAB#11/sqe-gradebook/. "$CHECK_DIR/"
+          rm -rf "$CHECK_DIR/target"
+          mv "$CHECK_DIR/tests/AddScoreParameterizedTest.java" "$CHECK_DIR/tests/AddScoreParameterizedTest.java.disabled"
+          set +e
+          mvn -B -f "$CHECK_DIR/pom.xml" clean verify 2>&1 | tee "$RUNNER_TEMP/lab11-threshold-check.log"
+          BUILD_STATUS=${PIPESTATUS[0]}
+          set -e
+          if [ "$BUILD_STATUS" -eq 0 ]; then
+            echo "Coverage threshold unexpectedly passed after disabling the boundary test."
+            exit 1
+          fi
+          if ! grep -q "Rule violated for bundle" "$RUNNER_TEMP/lab11-threshold-check.log"; then
+            echo "Build failed for a reason other than the JaCoCo coverage threshold."
+            exit 1
+          fi
+          echo "PASS: JaCoCo rejected the weakened test suite as expected."
+
+      - name: Collect final coverage reports
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p coverage-artifacts/final
+          if [ -d LABs/LAB#11/sqe-gradebook/target/site/jacoco ]; then
+            cp -R LABs/LAB#11/sqe-gradebook/target/site/jacoco/. coverage-artifacts/final/
+            cp LABs/LAB#11/sqe-gradebook/target/site/jacoco/jacoco.xml coverage-artifacts/final-jacoco.xml
+          fi
+          if [ -d LABs/LAB#11/sqe-gradebook/target/surefire-reports ]; then
+            cp -R LABs/LAB#11/sqe-gradebook/target/surefire-reports coverage-artifacts/
+          fi
+
+      - name: Upload baseline and final HTML coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab11-jacoco-html-reports
+          path: coverage-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
