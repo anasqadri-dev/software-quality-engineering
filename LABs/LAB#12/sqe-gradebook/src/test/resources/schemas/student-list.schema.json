@@ -1,0 +1,28 @@
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "studentId",
+      "name",
+      "average"
+    ],
+    "properties": {
+      "studentId": {
+        "type": "string",
+        "pattern": "^S[0-9]{4}$"
+      },
+      "name": {
+        "type": "string"
+      },
+      "average": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 100
+      }
+    },
+    "additionalProperties": false
+  }
+}
