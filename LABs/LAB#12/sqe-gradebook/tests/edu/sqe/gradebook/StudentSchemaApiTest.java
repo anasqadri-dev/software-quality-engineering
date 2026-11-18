@@ -11,6 +11,7 @@ import io.restassured.response.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class StudentSchemaApiTest extends ApiTestBase {
 
     @Test
@@ -47,31 +48,35 @@ class StudentSchemaApiTest extends ApiTestBase {
                 "schemas/student-list.schema.json"
             ));
     }
+
     @Test
-void studentListResponseShouldBeUnderOneSecond() {
+    void studentListResponseShouldBeUnderOneSecond() {
 
-    // Warm up the endpoint before measuring
-    given()
-    .when()
-        .get("/students");
+        // Warm up the endpoint before measuring
+        given()
+        .when()
+            .get("/students");
 
-    // Measure response time
-    Response response = given()
-    .when()
-        .get("/students");
+        // Measure response time
+        Response response = given()
+        .when()
+            .get("/students");
 
-    long responseTime = response.getTime();
+        long responseTime = response.getTime();
 
-    assertEquals(200, response.statusCode());
+        assertEquals(200, response.statusCode());
 
-    assertTrue(
-        responseTime < 1000,
-        "Response time should be under 1000 ms, but was "
-                + responseTime + " ms"
-    );
+        // Shared CI and lab machines can experience variable load.
+        // A generous 1000 ms ceiling avoids brittle timing tests while
+        // still detecting unusually slow responses for this small endpoint.
+        assertTrue(
+            responseTime < 1000,
+            "Response time should be under 1000 ms, but was "
+                    + responseTime + " ms"
+        );
 
-    System.out.println(
-        "GET /students response time: " + responseTime + " ms"
-    );
-}
+        System.out.println(
+            "GET /students response time: " + responseTime + " ms"
+        );
+    }
 }
