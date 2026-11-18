@@ -15,10 +15,108 @@ The Gradebook REST API was manually tested using PowerShell HTTP requests. The p
 | `/students/S1001/grade` | GET | Retrieve average and letter grade | 200 | Pass |
 | `/grade-scale?score=90` | GET | Look up letter grade | 200 | Pass |
 
+### Representative request and response examples
+
+The following examples document the API contract. The response bodies show the expected JSON structure for the tested scenarios.
+
+**1. Register a student**
+
+Request:
+```http
+POST /students
+Content-Type: application/json
+
+{
+  "studentId": "S1001",
+  "name": "Amina Khan"
+}
+```
+
+Expected response — HTTP 201:
+```json
+{
+  "studentId": "S1001",
+  "name": "Amina Khan",
+  "average": 0
+}
+```
+
+**2. Record a score**
+
+Request:
+```http
+POST /students/S1001/scores
+Content-Type: application/json
+
+{
+  "score": 85
+}
+```
+
+Expected response — HTTP 201:
+```json
+{
+  "studentId": "S1001",
+  "score": 85,
+  "average": 85
+}
+```
+
+**3. Retrieve the student's grade**
+
+After recording scores of 85 and 90, request:
+```http
+GET /students/S1001/grade
+```
+
+Expected response — HTTP 200:
+```json
+{
+  "studentId": "S1001",
+  "average": 88,
+  "letterGrade": "B"
+}
+```
+
+**4. Look up a grade-scale value**
+
+Request:
+```http
+GET /grade-scale?score=90
+```
+
+Expected response — HTTP 200:
+```json
+{
+  "score": 90,
+  "letterGrade": "A"
+}
+```
+
+**5. Reject an invalid score**
+
+Request:
+```http
+POST /students/S1001/scores
+Content-Type: application/json
+
+{
+  "score": 101
+}
+```
+
+Expected response — HTTP 400:
+```json
+{
+  "error": "score must be between 0 and 100"
+}
+```
+
 ### Observed Grade Calculation
 Student S1001 received scores of 85 and 90.
 - Calculated average: 88
 - Letter grade: B
+
 The average was rounded to the nearest whole number.
 
 ## 3. Negative API Testing
@@ -65,10 +163,10 @@ Invalid values -1 and 101 returned HTTP 400.
 5. Average calculations and letter-grade classifications matched the expected results.
 6. Requests for unknown students returned HTTP 404.
 7. Requests for grades without recorded scores returned HTTP 400.
-8. The student response currently includes a `scores` property. This will be examined during JSON Schema validation in the next task.
+8. **Initial defect (before the fix):** the student response included an extra `scores` property. This violated the intended JSON response contract and was identified by the schema validation task. The property was subsequently excluded using `@JsonIgnore`; the corrected response is validated by the automated schema test.
 
 ## 7. Conclusion
-Manual exploration confirmed that the implemented Gradebook REST API successfully handles the tested positive and negative scenarios. The observed responses matched the expected HTTP status codes and grade calculations. Automated API testing and JSON Schema validation will provide further verification.
+Manual exploration confirmed that the implemented Gradebook REST API successfully handles the tested positive and negative scenarios. The observed responses matched the expected HTTP status codes and grade calculations. Automated API testing and JSON Schema validation provide further verification.
 
 ## JSON Schema Validation and Performance Testing
 
@@ -95,6 +193,6 @@ A performance test was added to measure the response time of `GET /students`.
 
 The test performs a warm-up request and then measures a second request. The response must be successful and complete in less than 1000 milliseconds.
 
-**Observed response time:** 12 ms
+**Previously observed response time:** 12 ms
 
-**Result:** Passed — the response time was below the required 1000 ms threshold.
+**Result:** Passed — the recorded response time was below the 1000 ms threshold. Response times can vary with machine load and environment.
